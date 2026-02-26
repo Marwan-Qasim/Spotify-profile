@@ -1,6 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, use} from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { token } from './spotify';
+
 import styled from 'styled-components';
-import Login from './components/login';
+import Login from './components/Login';
+import Profile from './components/Profile';
 
 const AppContainer = styled.div`
   display: flex;
@@ -17,14 +21,27 @@ const MainContent = styled.main`
 
 
 function App() {
- 
+  const [accessToken, setAccessToken] = useState(null);
+
+  useEffect(() => {
+    setAccessToken(token);
+  }, []);
+
   return (
     <>
-      <AppContainer>
-        <MainContent>
-          <Login></Login>
-        </MainContent>
-      </AppContainer>
+    {accessToken ? (
+        <Router>
+          <AppContainer>
+            <MainContent>
+              <Routes>
+                <Route path="/" element={<Profile />} />
+              </Routes>
+            </MainContent>
+          </AppContainer>
+        </Router>
+      ) : (
+        <Login></Login>
+      )} 
     </>
   )
 }
