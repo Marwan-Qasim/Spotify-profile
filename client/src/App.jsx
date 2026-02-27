@@ -5,6 +5,7 @@ import { token } from './spotify';
 import styled from 'styled-components';
 import Login from './components/Login';
 import Profile from './components/Profile';
+import Nav from './components/Nav';
 
 const AppContainer = styled.div`
   display: flex;
@@ -32,6 +33,7 @@ function App() {
     {accessToken ? (
         <Router>
           <AppContainer>
+            <Nav />
             <MainContent>
               <Routes>
                 <Route path="/" element={<Profile />} />
@@ -40,7 +42,7 @@ function App() {
           </AppContainer>
         </Router>
       ) : (
-        <Login></Login>
+        <Login />
       )} 
     </>
   )

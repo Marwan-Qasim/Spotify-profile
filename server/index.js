@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 8888;
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID || 'e6e86f3fe5054f6e99c7b64068d397df';
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET || 'fe3f186ef84f482495304ccb19c28376';
 const REDIRECT_URI = process.env.REDIRECT_URI || 'http://localhost:8888/callback';
-const FRONTEND_URI = process.env.FRONTEND_URI || 'http://localhost:3000';
+const FRONTEND_URI = process.env.FRONTEND_URI || 'http://localhost:5173';
 
 app.use(cors({ origin: FRONTEND_URI, credentials: true }));
 app.use(express.json());

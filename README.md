@@ -113,7 +113,7 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ## Running the Application
 
 1. **Backend**: `http://localhost:8000`
-2. **Frontend**: `http://localhost:3000`
+2. **Frontend**: `http://localhost:5173`
 
 The application will automatically handle the OAuth flow and redirect you to login with Spotify.
 

@@ -57,7 +57,7 @@ const Profile = () => {
         </Name>
 
         </ProfileHeader>
-        {/* Additional profile details like top artists, tracks, playlists can be added here */}
+
       </ProfileContainer>
     )
 }
