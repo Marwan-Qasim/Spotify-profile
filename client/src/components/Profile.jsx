@@ -349,6 +349,53 @@ const Profile = () => {
 
         <LogoutButton onClick={logout}>Logout</LogoutButton>
         </ProfileHeader>
+        <Grid>
+        {/* Top Artists */}
+        <Section>
+          <SectionHeader>
+            <SectionTitle>Top Artists of All Time</SectionTitle>
+            <SeeMoreLink to="/top-artists">See More</SeeMoreLink>
+          </SectionHeader>
+          <ArtistList>
+            {topArtists?.items?.slice(0, 10).map(artist => (
+              <ArtistItem key={artist.id}>
+                <ArtistImage>
+                  {artist.images?.[0] && (
+                    <img src={artist.images[0].url} alt={artist.name} />
+                  )}
+                </ArtistImage>
+                <ArtistName>{artist.name}</ArtistName>
+              </ArtistItem>
+            ))}
+          </ArtistList>
+        </Section>
+
+        {/* Top Tracks */}
+        <Section>
+          <SectionHeader>
+            <SectionTitle>Top Tracks of All Time</SectionTitle>
+            <SeeMoreLink to="/top-tracks">See More</SeeMoreLink>
+          </SectionHeader>
+          <TrackList>
+            {topTracks?.items?.slice(0, 10).map(track => (
+              <TrackItem key={track.id}>
+                <TrackImage>
+                  {track.album?.images?.[0] && (
+                    <img src={track.album.images[0].url} alt={track.name} />
+                  )}
+                </TrackImage>
+                <TrackInfo>
+                  <TrackName>{track.name}</TrackName>
+                  <TrackArtist>
+                    {track.artists?.map(a => a.name).join(', ')} · {track.album?.name}
+                  </TrackArtist>
+                </TrackInfo>
+                <TrackDuration>{formatDuration(track.duration_ms)}</TrackDuration>
+              </TrackItem>
+            ))}
+          </TrackList>
+        </Section>
+      </Grid>
 
       </ProfileContainer>
     )
