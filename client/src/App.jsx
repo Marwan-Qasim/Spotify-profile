@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Login from './components/Login';
 import Profile from './components/Profile';
 import Nav from './components/Nav';
+import TopArtists from './components/TopArtists';
 
 const AppContainer = styled.div`
   display: flex;
@@ -37,6 +38,7 @@ function App() {
             <MainContent>
               <Routes>
                 <Route path="/" element={<Profile />} />
+                <Route path="/top-artists" element={<TopArtists />} />
               </Routes>
             </MainContent>
           </AppContainer>

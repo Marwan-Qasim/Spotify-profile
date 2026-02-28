@@ -12,7 +12,7 @@ const ProfileContainer = styled.div`
   padding: 60px 60px 60px;
   max-width: 1400px;
   margin: 0 auto;
-  animation: ${fadeIn} 0.5s ease;
+  animation: ${fadeIn} 0.3s ease;
 `;
 
 const ProfileHeader = styled.header`
