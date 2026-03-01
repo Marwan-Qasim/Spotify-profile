@@ -8,6 +8,7 @@ import Profile from './components/Profile';
 import Nav from './components/Nav';
 import TopArtists from './components/TopArtists';
 import TopTracks from './components/TopTracks';
+import RecentlyPlayed from './components/RecentlyPlayed';
 
 const AppContainer = styled.div`
   display: flex;
@@ -41,6 +42,7 @@ function App() {
                 <Route path="/" element={<Profile />} />
                 <Route path="/top-artists" element={<TopArtists />} />
                 <Route path="/top-tracks" element={<TopTracks />} />
+                <Route path="/recent" element={<RecentlyPlayed />} />
               </Routes>
             </MainContent>
           </AppContainer>
