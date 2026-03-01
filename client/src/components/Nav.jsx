@@ -3,36 +3,50 @@ import styled from 'styled-components';
 
 const NavContainer = styled.nav`
   position: fixed;
-  top: 0;
-  left: 0;
-  width: var(--nav-width);
-  height: 100vh;
-  background-color: #000;
+  top: 50%;
+  left: 30px;
+  transform: translateY(-50%);
+  width: 70px;
+  background-color: rgba(18, 18, 18, 0.95);
+  backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 20px 0;
   z-index: 100;
+  border-radius: 50px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 const Logo = styled.a`
+  position: fixed;
+  top: 30px;
+  left: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 50px;
   height: 50px;
-  margin-bottom: 20px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  z-index: 101;
 
   svg {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     fill: var(--white);
-    transition: fill 0.2s;
+    transition: all 0.3s ease;
   }
 
-  &:hover svg {
-    fill: var(--green);
+  &:hover {
+    background-color: rgba(29, 185, 84, 0.15);
+    transform: scale(1.1);
+    
+    svg {
+      fill: var(--green);
+    }
   }
 `;
 
@@ -41,73 +55,138 @@ const NavItems = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   flex: 1;
   justify-content: center;
   width: 100%;
+  padding: 10px 0;
 `;
 
 const NavItem = styled.li`
   width: 100%;
+  display: flex;
+  justify-content: center;
 `;
 
 const StyledNavLink = styled(NavLink)`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 14px 0;
-  color: var(--light-grey);
-  text-decoration: none;
-  transition: all 0.2s;
-  position: relative;
-  font-size: 1rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 600;
-
-  &:hover {
-    color: var(--white);
-  }
-
-  &.active {
-    color: var(--white);
-
-    &::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 3px;
-      height: 24px;
-      background-color: var(--green);
-      border-radius: 0 2px 2px 0;
-    }
-  }
-
-  svg {
-    width: 22px;
-    height: 22px;
-    fill: currentColor;
-  }
-`;
-
-const GithubLink = styled.a`
-  display: flex;
   align-items: center;
   justify-content: center;
+  width: 50px;
+  height: 50px;
   color: var(--light-grey);
-  transition: color 0.2s;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  border-radius: 50%;
 
-  &:hover {
-    color: var(--white);
+  span {
+    display: none;
   }
 
   svg {
     width: 24px;
     height: 24px;
     fill: currentColor;
+    transition: all 0.3s ease;
+  }
+
+  /* Profile - Green */
+  &:nth-of-type(1) {
+    &:hover {
+      background-color: rgba(29, 185, 84, 0.15);
+      color: #1db954;
+      transform: scale(1.1);
+    }
+
+    &.active {
+      background-color: rgba(29, 185, 84, 0.2);
+      color: #1db954;
+    }
+  }
+
+  /* Top Artists - Purple */
+  &:nth-of-type(2) {
+    &:hover {
+      background-color: rgba(138, 43, 226, 0.15);
+      color: #8a2be2;
+      transform: scale(1.1);
+    }
+
+    &.active {
+      background-color: rgba(138, 43, 226, 0.2);
+      color: #8a2be2;
+    }
+  }
+
+  /* Top Tracks - Blue */
+  &:nth-of-type(3) {
+    &:hover {
+      background-color: rgba(30, 144, 255, 0.15);
+      color: #1e90ff;
+      transform: scale(1.1);
+    }
+
+    &.active {
+      background-color: rgba(30, 144, 255, 0.2);
+      color: #1e90ff;
+    }
+  }
+
+  /* Recent - Orange */
+  &:nth-of-type(4) {
+    &:hover {
+      background-color: rgba(255, 140, 0, 0.15);
+      color: #ff8c00;
+      transform: scale(1.1);
+    }
+
+    &.active {
+      background-color: rgba(255, 140, 0, 0.2);
+      color: #ff8c00;
+    }
+  }
+
+  /* Playlists - Pink */
+  &:nth-of-type(5) {
+    &:hover {
+      background-color: rgba(255, 20, 147, 0.15);
+      color: #ff1493;
+      transform: scale(1.1);
+    }
+
+    &.active {
+      background-color: rgba(255, 20, 147, 0.2);
+      color: #ff1493;
+    }
+  }
+`;
+
+const GithubLink = styled.a`
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  color: var(--light-grey);
+  transition: all 0.3s ease;
+  border-radius: 50%;
+  z-index: 101;
+
+  svg {
+    width: 28px;
+    height: 28px;
+    fill: currentColor;
+    transition: all 0.3s ease;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: var(--white);
+    transform: scale(1.1);
   }
 `;
 
@@ -155,50 +234,45 @@ const GithubIcon = () => (
 );
 
 const Nav = () => (
-  <NavContainer>
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-      <Logo href="/">
-        <SpotifyIcon />
-      </Logo>
+  <>
+    <Logo href="/">
+      <SpotifyIcon />
+    </Logo>
 
+    <NavContainer>
       <NavItems>
         <NavItem>
           <StyledNavLink to="/" end>
             <UserIcon />
-            <span>Profile</span>
           </StyledNavLink>
         </NavItem>
         <NavItem>
           <StyledNavLink to="/top-artists">
             <MicIcon />
-            <span>Top Artists</span>
           </StyledNavLink>
         </NavItem>
         <NavItem>
           <StyledNavLink to="/top-tracks">
             <MusicIcon />
-            <span>Top Tracks</span>
           </StyledNavLink>
         </NavItem>
         <NavItem>
           <StyledNavLink to="/recent">
             <HistoryIcon />
-            <span>Recent</span>
           </StyledNavLink>
         </NavItem>
         <NavItem>
           <StyledNavLink to="/playlists">
             <ListIcon />
-            <span>Playlists</span>
           </StyledNavLink>
         </NavItem>
       </NavItems>
-    </div>
+    </NavContainer>
 
     <GithubLink href="https://github.com/Marwan-Qasim/Spotify-profile" target="_blank" rel="noopener noreferrer">
       <GithubIcon />
     </GithubLink>
-  </NavContainer>
+  </>
 );
 
 export default Nav;
