@@ -24,12 +24,19 @@ const TrackList = styled.ul`
 `;
 
 const TrackItem = styled.li`
+  list-style: none;
+`;
+
+const TrackLink = styled.a`
   display: flex;
   align-items: center;
   gap: 16px;
   padding: 10px 12px;
   border-radius: 6px;
   transition: background 0.15s;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 
   &:hover {
     background: rgba(255, 255, 255, 0.05);
@@ -107,18 +114,20 @@ const RecentlyPlayed = () => {
             <TrackList>
             {tracks?.items?.map(({ track, played_at }) => (
                 <TrackItem key={`${track.id}-${played_at}`}>
-                <AlbumArt>
-                    {track.album?.images?.[0] && (
-                    <img src={track.album.images[0].url} alt={track.album.name} />
-                    )}
-                </AlbumArt>
-                <TrackInfo>
-                    <TrackName>{track.name}</TrackName>
-                    <TrackMeta>
-                    {track.artists?.map(a => a.name).join(', ')} · {track.album?.name}
-                    </TrackMeta>
-                </TrackInfo>
-                <Duration>{formatDuration(track.duration_ms)}</Duration>
+                  <TrackLink href={track.external_urls?.spotify} target="_blank" rel="noopener noreferrer">
+                    <AlbumArt>
+                        {track.album?.images?.[0] && (
+                        <img src={track.album.images[0].url} alt={track.album.name} />
+                        )}
+                    </AlbumArt>
+                    <TrackInfo>
+                        <TrackName>{track.name}</TrackName>
+                        <TrackMeta>
+                        {track.artists?.map(a => a.name).join(', ')} · {track.album?.name}
+                        </TrackMeta>
+                    </TrackInfo>
+                    <Duration>{formatDuration(track.duration_ms)}</Duration>
+                  </TrackLink>
                 </TrackItem>
             ))}
             </TrackList>

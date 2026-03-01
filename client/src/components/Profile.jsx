@@ -167,18 +167,23 @@ const ArtistList = styled.ul`
 `;
 
 const ArtistItem = styled.li`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 10px 0;
   border-bottom: 1px solid rgba(255,255,255,0.05);
-  transition: background 0.2s;
-  border-radius: 4px;
-  cursor: default;
 
   &:last-child {
     border-bottom: none;
   }
+`;
+
+const ArtistLink = styled.a`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s;
+  border-radius: 4px;
+  cursor: pointer;
 
   &:hover {
     background: rgba(255,255,255,0.03);
@@ -211,17 +216,23 @@ const TrackList = styled.ul`
 `;
 
 const TrackItem = styled.li`
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 8px 0;
   border-bottom: 1px solid rgba(255,255,255,0.05);
-  cursor: default;
-  border-radius: 4px;
 
   &:last-child {
     border-bottom: none;
   }
+`;
+
+const TrackLink = styled.a`
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 0;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
 
   &:hover {
     background: rgba(255,255,255,0.03);
@@ -359,12 +370,14 @@ const Profile = () => {
           <ArtistList>
             {topArtists?.items?.slice(0, 10).map(artist => (
               <ArtistItem key={artist.id}>
-                <ArtistImage>
-                  {artist.images?.[0] && (
-                    <img src={artist.images[0].url} alt={artist.name} />
-                  )}
-                </ArtistImage>
-                <ArtistName>{artist.name}</ArtistName>
+                <ArtistLink href={artist.external_urls?.spotify} target="_blank" rel="noopener noreferrer">
+                  <ArtistImage>
+                    {artist.images?.[0] && (
+                      <img src={artist.images[0].url} alt={artist.name} />
+                    )}
+                  </ArtistImage>
+                  <ArtistName>{artist.name}</ArtistName>
+                </ArtistLink>
               </ArtistItem>
             ))}
           </ArtistList>
@@ -379,18 +392,20 @@ const Profile = () => {
           <TrackList>
             {topTracks?.items?.slice(0, 10).map(track => (
               <TrackItem key={track.id}>
-                <TrackImage>
-                  {track.album?.images?.[0] && (
-                    <img src={track.album.images[0].url} alt={track.name} />
-                  )}
-                </TrackImage>
-                <TrackInfo>
-                  <TrackName>{track.name}</TrackName>
-                  <TrackArtist>
-                    {track.artists?.map(a => a.name).join(', ')} · {track.album?.name}
-                  </TrackArtist>
-                </TrackInfo>
-                <TrackDuration>{formatDuration(track.duration_ms)}</TrackDuration>
+                <TrackLink href={track.external_urls?.spotify} target="_blank" rel="noopener noreferrer">
+                  <TrackImage>
+                    {track.album?.images?.[0] && (
+                      <img src={track.album.images[0].url} alt={track.name} />
+                    )}
+                  </TrackImage>
+                  <TrackInfo>
+                    <TrackName>{track.name}</TrackName>
+                    <TrackArtist>
+                      {track.artists?.map(a => a.name).join(', ')} · {track.album?.name}
+                    </TrackArtist>
+                  </TrackInfo>
+                  <TrackDuration>{formatDuration(track.duration_ms)}</TrackDuration>
+                </TrackLink>
               </TrackItem>
             ))}
           </TrackList>

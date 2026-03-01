@@ -60,9 +60,17 @@ const ArtistsGrid = styled.div`
   gap: 28px;
 `;
 
-const ArtistCard = styled.div`
+const ArtistCard = styled.a`
+  display: block;
   text-align: center;
-  cursor: default;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 
   &:hover .artist-img {
     filter: brightness(1.1);
@@ -162,7 +170,7 @@ const TopArtist = () => {
         ) : (
           <ArtistsGrid>
             {artists?.items?.map(artist => (
-              <ArtistCard key={artist.id}>
+              <ArtistCard key={artist.id} href={artist.external_urls?.spotify} target="_blank" rel="noopener noreferrer">
                 <ArtistImage className="artist-img">
                   {artist.images?.[0] && (
                     <img src={artist.images[0].url} alt={artist.name} />

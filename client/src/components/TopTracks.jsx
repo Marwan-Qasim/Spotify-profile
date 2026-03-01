@@ -56,20 +56,22 @@ const TrackList = styled.ul`
 `;
 
 const TrackItem = styled.li`
+  list-style: none;
+`;
+
+const TrackLink = styled.a`
   display: flex;
   align-items: center;
   gap: 16px;
   padding: 10px 12px;
   border-radius: 6px;
   transition: background 0.15s;
-  cursor: default;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 
   &:hover {
     background: rgba(255, 255, 255, 0.05);
-
-    .play-btn {
-      opacity: 1;
-    }
   }
 `;
 
@@ -100,21 +102,13 @@ const TrackInfo = styled.div`
   min-width: 0;
 `;
 
-const TrackName = styled.a`
-  display: block;
+const TrackName = styled.p`
   font-size: 1.4rem;
   font-weight: 500;
   color: var(--white);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-decoration: none;
-  transition: color 0.2s;
-
-  &:hover {
-    color: var(--green);
-    text-decoration: underline;
-  }
 `;
 
 const TrackArtist = styled.p`
@@ -206,20 +200,20 @@ const Tracks = () => {
         <TrackList>
           {tracks?.items?.map((track, i) => (
             <TrackItem key={track.id}>
-              <TrackNumber>{i + 1}</TrackNumber>
-              <AlbumArt>
-                {track.album?.images?.[0] && (
-                  <img src={track.album.images[0].url} alt={track.album.name} />
-                )}
-              </AlbumArt>
-              <TrackInfo>
-                <TrackName href={track.external_urls?.spotify} target="_blank" rel="noopener noreferrer">
-                  {track.name}
-                </TrackName>
-                <TrackArtist>{track.artists?.map(a => a.name).join(', ')}</TrackArtist>
-              </TrackInfo>
-              <TrackAlbum>{track.album?.name}</TrackAlbum>
-              <Duration>{formatDuration(track.duration_ms)}</Duration>
+              <TrackLink href={track.external_urls?.spotify} target="_blank" rel="noopener noreferrer">
+                <TrackNumber>{i + 1}</TrackNumber>
+                <AlbumArt>
+                  {track.album?.images?.[0] && (
+                    <img src={track.album.images[0].url} alt={track.album.name} />
+                  )}
+                </AlbumArt>
+                <TrackInfo>
+                  <TrackName>{track.name}</TrackName>
+                  <TrackArtist>{track.artists?.map(a => a.name).join(', ')}</TrackArtist>
+                </TrackInfo>
+                <TrackAlbum>{track.album?.name}</TrackAlbum>
+                <Duration>{formatDuration(track.duration_ms)}</Duration>
+              </TrackLink>
             </TrackItem>
           ))}
         </TrackList>
