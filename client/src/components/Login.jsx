@@ -73,7 +73,7 @@ const Login = () => (
     </Logo>
     <Title>Spotify Profile</Title>
     <Subtitle>Visualize your Spotify listening history</Subtitle>
-    <LoginButton href="https://spotify-profile-bmj1.onrender.com">
+    <LoginButton href="https://spotify-profile-bmj1.onrender.com/login">
       Log in with Spotify
     </LoginButton>
   </LoginContainer>
