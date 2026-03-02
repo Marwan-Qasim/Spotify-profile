@@ -1,9 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-// Backend URL - use environment variable in production, relative path in development
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
-
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -69,17 +66,28 @@ const SpotifyIcon = () => (
   </svg>
 );
 
-const Login = () => (
-  <LoginContainer>
-    <Logo>
-      <SpotifyIcon />
-    </Logo>
-    <Title>Spotify Profile</Title>
-    <Subtitle>Visualize your Spotify listening history</Subtitle>
-    <LoginButton href="https://spotify-profile-bmj1.onrender.com/login">
-      Log in with Spotify
-    </LoginButton>
-  </LoginContainer>
-);
+const Login = () => {
+  const handleLogin = () => {
+    // Clear any existing tokens before logging in
+    window.localStorage.removeItem('spotify_token_timestamp');
+    window.localStorage.removeItem('spotify_access_token');
+    window.localStorage.removeItem('spotify_refresh_token');
+    // Redirect to backend login
+    window.location.href = 'https://spotify-profile-bmj1.onrender.com/login';
+  };
+
+  return (
+    <LoginContainer>
+      <Logo>
+        <SpotifyIcon />
+      </Logo>
+      <Title>Spotify Profile</Title>
+      <Subtitle>Visualize your Spotify listening history</Subtitle>
+      <LoginButton as="button" onClick={handleLogin}>
+        Log in with Spotify
+      </LoginButton>
+    </LoginContainer>
+  );
+};
 
 export default Login;
