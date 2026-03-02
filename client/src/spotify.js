@@ -13,14 +13,31 @@ const getTokenTimestamp = () => window.localStorage.getItem('spotify_token_times
 const getLocalAccessToken = () => window.localStorage.getItem('spotify_access_token');
 const getLocalRefreshToken = () => window.localStorage.getItem('spotify_refresh_token');
 
+// Logout function - defined early so it can be used by other functions
+export const logout = () => {
+  window.localStorage.removeItem('spotify_token_timestamp');
+  window.localStorage.removeItem('spotify_access_token');
+  window.localStorage.removeItem('spotify_refresh_token');
+  // Clear URL hash
+  window.history.replaceState('', document.title, window.location.pathname + window.location.search);
+  window.location.href = '/';
+};
+
 const refreshAccessToken = async () => {
   try {
-    const { data } = await axios.get(`/refresh_token?refresh_token=${getLocalRefreshToken()}`);
+    const refreshToken = getLocalRefreshToken();
+    if (!refreshToken || refreshToken === 'undefined') {
+      console.error('No refresh token available');
+      logout();
+      return;
+    }
+    const { data } = await axios.get(`/refresh_token?refresh_token=${refreshToken}`);
     const { access_token } = data;
     setLocalAccessToken(access_token);
     window.location.reload();
   } catch (e) {
-    console.error(e);
+    console.error('Token refresh failed:', e);
+    logout();
   }
 };
 
@@ -28,22 +45,36 @@ export const getAccessToken = () => {
   const { error, access_token, refresh_token } = getHashParams();
 
   if (error) {
-    console.error(error);
-    refreshAccessToken();
+    console.error('Auth error:', error);
+    // Clear hash and logout on error
+    window.history.replaceState('', document.title, window.location.pathname + window.location.search);
+    logout();
+    return null;
   }
 
-  if (isTokenExpired()) {
-    refreshAccessToken();
-  }
-
-  const localAccessToken = getLocalAccessToken();
-
-  if ((!localAccessToken || localAccessToken === 'undefined') && access_token) {
+  // ALWAYS prioritize fresh tokens from URL hash (new login)
+  if (access_token && refresh_token) {
     setLocalAccessToken(access_token);
     setLocalRefreshToken(refresh_token);
+    // Clear hash from URL to prevent token reuse
+    window.history.replaceState('', document.title, window.location.pathname + window.location.search);
     return access_token;
   }
 
+  // Check if existing token is expired
+  if (isTokenExpired()) {
+    refreshAccessToken();
+    return null;
+  }
+
+  // Fall back to localStorage token
+  const localAccessToken = getLocalAccessToken();
+  
+  // Validate token exists and is not 'undefined' string
+  if (!localAccessToken || localAccessToken === 'undefined') {
+    return null;
+  }
+  
   return localAccessToken;
 };
 
@@ -66,18 +97,19 @@ const getHashParams = () => {
 
 export const token = getAccessToken();
 
-export const logout = () => {
-  window.localStorage.removeItem('spotify_token_timestamp');
-  window.localStorage.removeItem('spotify_access_token');
-  window.localStorage.removeItem('spotify_refresh_token');
-  window.location.reload();
-};
-
 // API calls
-const getHeaders = () => ({
-  Authorization: `Bearer ${getLocalAccessToken()}`,
-  'Content-Type': 'application/json',
-});
+const getHeaders = () => {
+  const token = getLocalAccessToken();
+  if (!token || token === 'undefined') {
+    console.error('No valid access token available');
+    logout();
+    return {};
+  }
+  return {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  };
+};
 
 export const getUser = () => axios.get('https://api.spotify.com/v1/me', { headers: getHeaders() });
 

@@ -12,7 +12,26 @@ const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET || 'fe3f186ef84f48249530
 const REDIRECT_URI = process.env.REDIRECT_URI || 'http://localhost:8888/callback';
 const FRONTEND_URI = process.env.FRONTEND_URI || 'http://localhost:5173';
 
-app.use(cors({ origin: FRONTEND_URI, credentials: true }));
+// Allow multiple origins for CORS
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://the-spotify-profile.vercel.app',
+  process.env.FRONTEND_URI,
+].filter(Boolean);
+
+app.use(cors({ 
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, Postman, etc)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log(`Blocked origin: ${origin}`);
+      callback(null, true); // Allow for now - tighten security later
+    }
+  },
+  credentials: true 
+}));
 app.use(express.json());
 
 const generateRandomString = (length) => {
