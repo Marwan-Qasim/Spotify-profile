@@ -1,6 +1,9 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
+// Backend URL - use environment variable in production, relative path in development
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
+
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }

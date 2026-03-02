@@ -2,25 +2,40 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  padding: 20px 24px;
-  background: rgba(255, 0, 0, 0.04);
-  border: 1px solid rgba(255, 0, 0, 0.08);
-  color: #ff6b6b;
-  border-radius: 8px;
-  max-width: 780px;
-  margin: 24px auto;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+`;
+
+const Card = styled.div`
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--white, #fff);
+  border-radius: 12px;
+  padding: 36px 40px;
+  max-width: 1000px;
+  width: 100%;
   text-align: center;
 `;
 
 const Message = styled.p`
   margin: 0;
-  font-size: 1.05rem;
-  font-weight: 600;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--white, #fff);
 `;
 
 const ErrorMessage = ({ children }) => (
   <Wrapper role="alert" aria-live="assertive">
-    <Message>{children}</Message>
+    <Card>
+      <Message>{children}</Message>
+    </Card>
   </Wrapper>
 );
 

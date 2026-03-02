@@ -6,7 +6,9 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/refresh_token': 'hhttps://spotify-profile-bmj1.onrender.com'
+      '/refresh_token': 'https://spotify-profile-bmj1.onrender.com',
+      '/login': 'https://spotify-profile-bmj1.onrender.com',
+      '/callback': 'https://spotify-profile-bmj1.onrender.com'
     }
   }
 })
