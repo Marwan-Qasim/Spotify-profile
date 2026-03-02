@@ -1,6 +1,6 @@
-import React, {useState, useEffect, use} from 'react'
+import React, {useState, useEffect} from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { token } from './spotify';
+import { getAccessToken } from './spotify';
 
 import styled from 'styled-components';
 import Login from './components/Login';
@@ -29,7 +29,10 @@ function App() {
   const [accessToken, setAccessToken] = useState(null);
 
   useEffect(() => {
-    setAccessToken(token);
+    // Get token dynamically on component mount
+    // This ensures we check the URL hash AFTER the redirect from login
+    const currentToken = getAccessToken();
+    setAccessToken(currentToken);
   }, []);
 
   return (

@@ -97,6 +97,9 @@ const getHashParams = () => {
 
 export const token = getAccessToken();
 
+// Re-export getAccessToken so it can be called dynamically
+export { getAccessToken as getAccessTokenDynamic };
+
 // API calls
 const getHeaders = () => {
   const token = getLocalAccessToken();
