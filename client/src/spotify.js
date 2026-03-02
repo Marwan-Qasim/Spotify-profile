@@ -29,29 +29,21 @@ export const getAccessToken = () => {
 
   if (error) {
     console.error(error);
-    // Clear hash on error
-    window.history.pushState('', document.title, window.location.pathname + window.location.search);
     refreshAccessToken();
-    return null;
   }
 
-  
-  if (access_token) {
+  if (isTokenExpired()) {
+    refreshAccessToken();
+  }
+
+  const localAccessToken = getLocalAccessToken();
+
+  if ((!localAccessToken || localAccessToken === 'undefined') && access_token) {
     setLocalAccessToken(access_token);
     setLocalRefreshToken(refresh_token);
-   
-    window.history.pushState('', document.title, window.location.pathname + window.location.search);
     return access_token;
   }
 
- 
-  if (isTokenExpired()) {
-    refreshAccessToken();
-    return null;
-  }
-
-  
-  const localAccessToken = getLocalAccessToken();
   return localAccessToken;
 };
 
