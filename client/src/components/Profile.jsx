@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getUserInfo, logout, formatDuration } from '../spotify';
+import ErrorMessage from './ErrorMessage';
 import styled, { keyframes } from 'styled-components';
 
 const fadeIn = keyframes`
