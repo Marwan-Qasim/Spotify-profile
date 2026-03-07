@@ -31,7 +31,7 @@ const refreshAccessToken = async () => {
       logout();
       return;
     }
-    const { data } = await axios.get(`/refresh_token?refresh_token=${refreshToken}`);
+    const { data } = axios.get(`https://spotify-profile-bmj1.onrender.com/refresh_token?refresh_token=${refreshToken}`)
     const { access_token } = data;
     setLocalAccessToken(access_token);
     window.location.reload();
@@ -102,7 +102,7 @@ export { getAccessToken as getAccessTokenDynamic };
 
 // API calls
 const getHeaders = () => {
-  const token = getLocalAccessToken();
+  const token = getAccessToken();
   if (!token || token === 'undefined') {
     console.error('No valid access token available');
     logout();
