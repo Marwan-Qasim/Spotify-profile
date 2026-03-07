@@ -95,7 +95,7 @@ const getHashParams = () => {
   return hashParams;
 };
 
-export const token = getAccessToken();
+const token = getAccessToken();
 
 // Re-export getAccessToken so it can be called dynamically
 export { getAccessToken as getAccessTokenDynamic };
