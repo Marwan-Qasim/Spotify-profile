@@ -31,12 +31,19 @@ const refreshAccessToken = async () => {
       logout();
       return;
     }
-    const { data } = await axios.get(`https://spotify-profile-bmj1.onrender.com/refresh_token?refresh_token=${refreshToken}`)
+    console.log('Attempting to refresh token...');
+    const { data } = await axios.get(`https://spotify-profile-bmj1.onrender.com/refresh_token?refresh_token=${refreshToken}`);
     const { access_token } = data;
+    if (!access_token) {
+      console.error('No access token in refresh response');
+      logout();
+      return;
+    }
+    console.log('Token refreshed successfully');
     setLocalAccessToken(access_token);
     window.location.reload();
   } catch (e) {
-    console.error('Token refresh failed:', e);
+    console.error('Token refresh failed:', e.message);
     logout();
   }
 };
@@ -45,7 +52,7 @@ export const getAccessToken = () => {
   const { error, access_token, refresh_token } = getHashParams();
 
   if (error) {
-    console.error('Auth error:', error);
+    console.error('Auth error from URL:', error);
     // Clear hash and logout on error
     window.history.replaceState('', document.title, window.location.pathname + window.location.search);
     logout();
@@ -54,6 +61,7 @@ export const getAccessToken = () => {
 
   // ALWAYS prioritize fresh tokens from URL hash (new login)
   if (access_token && refresh_token) {
+    console.log('New tokens found in URL hash, storing...');
     setLocalAccessToken(access_token);
     setLocalRefreshToken(refresh_token);
     // Clear hash from URL to prevent token reuse
@@ -63,6 +71,7 @@ export const getAccessToken = () => {
 
   // Check if existing token is expired
   if (isTokenExpired()) {
+    console.log('Token expired, attempting refresh...');
     refreshAccessToken();
     return null;
   }
@@ -72,9 +81,11 @@ export const getAccessToken = () => {
   
   // Validate token exists and is not 'undefined' string
   if (!localAccessToken || localAccessToken === 'undefined') {
+    console.warn('No valid token found in storage');
     return null;
   }
   
+  console.log('Using token from localStorage');
   return localAccessToken;
 };
 
@@ -103,6 +114,8 @@ export { getAccessToken as getAccessTokenDynamic };
 // API calls
 const getHeaders = () => {
   const token = getAccessToken();
+  console.log('Token in getHeaders:', token ? '✓ exists' : '✗ missing');
+  console.log('Token length:', token ? token.length : 0);
   if (!token || token === 'undefined') {
     console.error('No valid access token available');
     logout();

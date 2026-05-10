@@ -7,10 +7,15 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 8888;
 
-const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID || 'e6e86f3fe5054f6e99c7b64068d397df';
-const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET || 'fe3f186ef84f482495304ccb19c28376';
-const REDIRECT_URI = process.env.REDIRECT_URI || 'http://localhost:8888/callback';
-const FRONTEND_URI = process.env.FRONTEND_URI || 'http://localhost:5173';
+const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
+const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
+const REDIRECT_URI = process.env.REDIRECT_URI;
+const FRONTEND_URI = process.env.FRONTEND_URI;
+
+if (!CLIENT_ID || !CLIENT_SECRET) {
+  console.error('ERROR: SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET must be set in .env');
+  process.exit(1);
+}
 
 // Allow multiple origins for CORS
 const allowedOrigins = [
