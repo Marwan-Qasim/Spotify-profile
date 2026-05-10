@@ -1,4 +1,18 @@
 import axios from 'axios';
+import {
+  getMockFollowing,
+  getMockPlaylistById,
+  getMockRecentlyPlayed,
+  getMockTopArtistsLong,
+  getMockTopArtistsMedium,
+  getMockTopArtistsShort,
+  getMockTopTracksLong,
+  getMockTopTracksMedium,
+  getMockTopTracksShort,
+  getMockUser,
+  getMockUserInfo,
+  getMockUserPlaylists,
+} from './mockSpotify';
 
 // Tokens
 const EXPIRATION_TIME = 3600 * 1000; // 1 hour in ms
@@ -12,6 +26,12 @@ const setLocalRefreshToken = (token) => window.localStorage.setItem('spotify_ref
 const getTokenTimestamp = () => window.localStorage.getItem('spotify_token_timestamp');
 const getLocalAccessToken = () => window.localStorage.getItem('spotify_access_token');
 const getLocalRefreshToken = () => window.localStorage.getItem('spotify_refresh_token');
+const hasLiveToken = () => Boolean(getLocalAccessToken() && getLocalAccessToken() !== 'undefined');
+const shouldUsePreviewData = () => !hasLiveToken();
+
+export const startSpotifyLogin = () => {
+  window.location.href = 'https://spotify-profile-bmj1.onrender.com/login';
+};
 
 // Logout function - defined early so it can be used by other functions
 export const logout = () => {
@@ -21,6 +41,14 @@ export const logout = () => {
   // Clear URL hash
   window.history.replaceState('', document.title, window.location.pathname + window.location.search);
   window.location.href = '/';
+};
+
+const requestOrPreview = (requestFn, previewFn) => {
+  if (shouldUsePreviewData()) {
+    return previewFn();
+  }
+
+  return requestFn();
 };
 
 const refreshAccessToken = async () => {
@@ -114,12 +142,8 @@ export { getAccessToken as getAccessTokenDynamic };
 // API calls
 const getHeaders = () => {
   const token = getAccessToken();
-  console.log('Token in getHeaders:', token ? '✓ exists' : '✗ missing');
-  console.log('Token length:', token ? token.length : 0);
   if (!token || token === 'undefined') {
-    console.error('No valid access token available');
-    logout();
-    return {};
+    return null;
   }
   return {
     Authorization: `Bearer ${token}`,
@@ -127,48 +151,85 @@ const getHeaders = () => {
   };
 };
 
-export const getUser = () => axios.get('https://api.spotify.com/v1/me', { headers: getHeaders() });
+export const getUser = () => requestOrPreview(
+  () => axios.get('https://api.spotify.com/v1/me', { headers: getHeaders() }),
+  getMockUser,
+);
 
 export const getFollowing = () =>
-  axios.get('https://api.spotify.com/v1/me/following?type=artist', { headers: getHeaders() });
+  requestOrPreview(
+    () => axios.get('https://api.spotify.com/v1/me/following?type=artist', { headers: getHeaders() }),
+    getMockFollowing,
+  );
 
 export const getRecentlyPlayed = () =>
-  axios.get('https://api.spotify.com/v1/me/player/recently-played', { headers: getHeaders() });
+  requestOrPreview(
+    () => axios.get('https://api.spotify.com/v1/me/player/recently-played', { headers: getHeaders() }),
+    getMockRecentlyPlayed,
+  );
 
 export const getTopArtistsShort = () =>
-  axios.get('https://api.spotify.com/v1/me/top/artists?limit=50&time_range=short_term', { headers: getHeaders() });
+  requestOrPreview(
+    () => axios.get('https://api.spotify.com/v1/me/top/artists?limit=50&time_range=short_term', { headers: getHeaders() }),
+    getMockTopArtistsShort,
+  );
 
 export const getTopArtistsMedium = () =>
-  axios.get('https://api.spotify.com/v1/me/top/artists?limit=50&time_range=medium_term', { headers: getHeaders() });
+  requestOrPreview(
+    () => axios.get('https://api.spotify.com/v1/me/top/artists?limit=50&time_range=medium_term', { headers: getHeaders() }),
+    getMockTopArtistsMedium,
+  );
 
 export const getTopArtistsLong = () =>
-  axios.get('https://api.spotify.com/v1/me/top/artists?limit=50&time_range=long_term', { headers: getHeaders() });
+  requestOrPreview(
+    () => axios.get('https://api.spotify.com/v1/me/top/artists?limit=50&time_range=long_term', { headers: getHeaders() }),
+    getMockTopArtistsLong,
+  );
 
 export const getTopTracksShort = () =>
-  axios.get('https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=short_term', { headers: getHeaders() });
+  requestOrPreview(
+    () => axios.get('https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=short_term', { headers: getHeaders() }),
+    getMockTopTracksShort,
+  );
 
 export const getTopTracksMedium = () =>
-  axios.get('https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=medium_term', { headers: getHeaders() });
+  requestOrPreview(
+    () => axios.get('https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=medium_term', { headers: getHeaders() }),
+    getMockTopTracksMedium,
+  );
 
 export const getTopTracksLong = () =>
-  axios.get('https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=long_term', { headers: getHeaders() });
+  requestOrPreview(
+    () => axios.get('https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=long_term', { headers: getHeaders() }),
+    getMockTopTracksLong,
+  );
 
 export const getUserPlaylists = () =>
-  axios.get('https://api.spotify.com/v1/me/playlists', { headers: getHeaders() });
+  requestOrPreview(
+    () => axios.get('https://api.spotify.com/v1/me/playlists', { headers: getHeaders() }),
+    getMockUserPlaylists,
+  );
 
 export const getPlaylistById = (playlistId) =>
-  axios.get(`https://api.spotify.com/v1/playlists/${playlistId}`, { headers: getHeaders() });
+  requestOrPreview(
+    () => axios.get(`https://api.spotify.com/v1/playlists/${playlistId}`, { headers: getHeaders() }),
+    getMockPlaylistById,
+  );
 
 export const getUserInfo = () =>
-  Promise.all([getUser(), getFollowing(), getRecentlyPlayed(), getTopArtistsLong(), getTopTracksLong(), getUserPlaylists()]).then(
-    ([user, followedArtists, recentlyPlayed, topArtists, topTracks, playlists]) => ({
-      user: user.data,
-      followedArtists: followedArtists.data,
-      recentlyPlayed: recentlyPlayed.data,
-      topArtists: topArtists.data,
-      topTracks: topTracks.data,
-      playlists: playlists.data,
-    })
+  requestOrPreview(
+    () =>
+      Promise.all([getUser(), getFollowing(), getRecentlyPlayed(), getTopArtistsLong(), getTopTracksLong(), getUserPlaylists()]).then(
+        ([user, followedArtists, recentlyPlayed, topArtists, topTracks, playlists]) => ({
+          user: user.data,
+          followedArtists: followedArtists.data,
+          recentlyPlayed: recentlyPlayed.data,
+          topArtists: topArtists.data,
+          topTracks: topTracks.data,
+          playlists: playlists.data,
+        })
+      ),
+    getMockUserInfo,
   );
 
 export const formatDuration = (ms) => {

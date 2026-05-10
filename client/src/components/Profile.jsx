@@ -309,7 +309,7 @@ const Profile = () => {
 
   useEffect(() => {
     getUserInfo().then(data => {
-      setProfile(data.user);
+      setProfile({ ...data.user, following: data.followedArtists });
       setTopArtists(data.topArtists);
       setTopTracks(data.topTracks);
       setPlaylists(data.playlists);
