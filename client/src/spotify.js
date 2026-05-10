@@ -31,7 +31,7 @@ const refreshAccessToken = async () => {
       logout();
       return;
     }
-    const { data } = axios.get(`https://spotify-profile-bmj1.onrender.com/refresh_token?refresh_token=${refreshToken}`)
+    const { data } = await axios.get(`https://spotify-profile-bmj1.onrender.com/refresh_token?refresh_token=${refreshToken}`)
     const { access_token } = data;
     setLocalAccessToken(access_token);
     window.location.reload();
